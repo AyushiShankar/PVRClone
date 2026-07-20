@@ -1,0 +1,83 @@
+package com.cinema.movie.pvr.dto;
+
+import com.cinema.movie.pvr.entity.ImportedMovie;
+import java.time.Instant;
+import java.time.LocalDate;
+
+public record ImportedMovieResponse(
+		Long id,
+		String source,
+		String externalId,
+		String url,
+		String primaryTitle,
+		String originalTitle,
+		String type,
+		String description,
+		String primaryImage,
+		String thumbnails,
+		String trailer,
+		String contentRating,
+		String genres,
+		Boolean isAdult,
+		LocalDate releaseDate,
+		Integer startYear,
+		Integer endYear,
+		Integer runtimeMinutes,
+		Double averageRating,
+		Integer numVotes,
+		String interests,
+		String countriesOfOrigin,
+		String externalLinks,
+		String spokenLanguages,
+		String filmingLocations,
+		String productionCompanies,
+		Long budget,
+		Long grossWorldwide,
+		Integer metascore,
+		String directors,
+		String writers,
+		Integer totalSeasons,
+		Integer totalEpisodes,
+		String episodes,
+		Instant importedAt
+) {
+	public static ImportedMovieResponse from(ImportedMovie movie) {
+		return new ImportedMovieResponse(
+				movie.getId(),
+				movie.getSource(),
+				movie.getExternalId(),
+				movie.getUrl(),
+				movie.getPrimaryTitle(),
+				movie.getOriginalTitle(),
+				movie.getType(),
+				movie.getDescription(),
+				movie.getPrimaryImage(),
+				movie.getThumbnails(),
+				movie.getTrailer(),
+				movie.getContentRating(),
+				movie.getGenres(),
+				movie.getAdult(),
+				movie.getReleaseDate(),
+				movie.getStartYear(),
+				movie.getEndYear(),
+				movie.getRuntimeMinutes(),
+				movie.getAverageRating(),
+				movie.getNumVotes(),
+				movie.getInterests(),
+				movie.getCountriesOfOrigin(),
+				movie.getExternalLinks(),
+				movie.getSpokenLanguages(),
+				movie.getFilmingLocations(),
+				movie.getProductionCompanies(),
+				movie.getBudget(),
+				movie.getGrossWorldwide(),
+				movie.getMetascore(),
+				movie.getDirectors(),
+				movie.getWriters(),
+				movie.getTotalSeasons(),
+				movie.getTotalEpisodes(),
+				movie.getEpisodes(),
+				movie.getImportedAt()
+		);
+	}
+}

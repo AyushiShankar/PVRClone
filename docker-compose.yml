@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: pvr-postgres
+    environment:
+      POSTGRES_DB: pvr
+      POSTGRES_USER: pvr
+      POSTGRES_PASSWORD: pvr
+    ports:
+      - "5432:5432"
+    volumes:
+      - pvr-postgres-data:/var/lib/postgresql/data
+
+volumes:
+  pvr-postgres-data:
