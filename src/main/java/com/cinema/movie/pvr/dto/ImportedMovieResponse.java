@@ -1,6 +1,9 @@
 package com.cinema.movie.pvr.dto;
 
 import com.cinema.movie.pvr.entity.ImportedMovie;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.Instant;
 import java.time.LocalDate;
 
@@ -14,10 +17,10 @@ public record ImportedMovieResponse(
 		String type,
 		String description,
 		String primaryImage,
-		String thumbnails,
-		String trailer,
+		Object thumbnails,
+		Object trailer,
 		String contentRating,
-		String genres,
+		Object genres,
 		Boolean isAdult,
 		LocalDate releaseDate,
 		Integer startYear,
@@ -25,22 +28,26 @@ public record ImportedMovieResponse(
 		Integer runtimeMinutes,
 		Double averageRating,
 		Integer numVotes,
-		String interests,
-		String countriesOfOrigin,
-		String externalLinks,
-		String spokenLanguages,
-		String filmingLocations,
-		String productionCompanies,
+		Object interests,
+		Object countriesOfOrigin,
+		Object externalLinks,
+		Object spokenLanguages,
+		Object filmingLocations,
+		Object productionCompanies,
 		Long budget,
 		Long grossWorldwide,
 		Integer metascore,
-		String directors,
-		String writers,
+		Object directors,
+		Object writers,
 		Integer totalSeasons,
 		Integer totalEpisodes,
-		String episodes,
+		Object episodes,
 		Instant importedAt
 ) {
+	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+	private static final TypeReference<Object> JSON_VALUE = new TypeReference<>() {
+	};
+
 	public static ImportedMovieResponse from(ImportedMovie movie) {
 		return new ImportedMovieResponse(
 				movie.getId(),
@@ -52,10 +59,10 @@ public record ImportedMovieResponse(
 				movie.getType(),
 				movie.getDescription(),
 				movie.getPrimaryImage(),
-				movie.getThumbnails(),
-				movie.getTrailer(),
+				jsonValue(movie.getThumbnails()),
+				jsonValue(movie.getTrailer()),
 				movie.getContentRating(),
-				movie.getGenres(),
+				jsonValue(movie.getGenres()),
 				movie.getAdult(),
 				movie.getReleaseDate(),
 				movie.getStartYear(),
@@ -63,21 +70,32 @@ public record ImportedMovieResponse(
 				movie.getRuntimeMinutes(),
 				movie.getAverageRating(),
 				movie.getNumVotes(),
-				movie.getInterests(),
-				movie.getCountriesOfOrigin(),
-				movie.getExternalLinks(),
-				movie.getSpokenLanguages(),
-				movie.getFilmingLocations(),
-				movie.getProductionCompanies(),
+				jsonValue(movie.getInterests()),
+				jsonValue(movie.getCountriesOfOrigin()),
+				jsonValue(movie.getExternalLinks()),
+				jsonValue(movie.getSpokenLanguages()),
+				jsonValue(movie.getFilmingLocations()),
+				jsonValue(movie.getProductionCompanies()),
 				movie.getBudget(),
 				movie.getGrossWorldwide(),
 				movie.getMetascore(),
-				movie.getDirectors(),
-				movie.getWriters(),
+				jsonValue(movie.getDirectors()),
+				jsonValue(movie.getWriters()),
 				movie.getTotalSeasons(),
 				movie.getTotalEpisodes(),
-				movie.getEpisodes(),
+				jsonValue(movie.getEpisodes()),
 				movie.getImportedAt()
 		);
+	}
+
+	private static Object jsonValue(String value) {
+		if (value == null || value.isBlank()) {
+			return null;
+		}
+		try {
+			return OBJECT_MAPPER.readValue(value, JSON_VALUE);
+		} catch (JsonProcessingException ignored) {
+			return value;
+		}
 	}
 }
