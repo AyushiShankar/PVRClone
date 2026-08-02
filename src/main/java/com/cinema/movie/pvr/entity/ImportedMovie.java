@@ -5,7 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import java.time.Instant;
@@ -122,8 +121,7 @@ public class ImportedMovie {
 	@Column(columnDefinition = "text")
 	private String episodes;
 
-	@Lob
-	@Column(name = "raw_payload", nullable = false)
+	@Column(name = "raw_payload", nullable = false, columnDefinition = "text")
 	private String rawPayload;
 
 	@Column(name = "imported_at", nullable = false)
