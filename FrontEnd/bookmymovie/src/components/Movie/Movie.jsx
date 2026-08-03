@@ -40,14 +40,41 @@ export default function Movie() {
     }
   };
 
+  const handleSection = (sectionKey) => {
+    const section = document.getElementById(sectionKey);
+    console.log(section);
+    setTimeout(() => {
+      section.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+        inline: "start",
+      });
+    }, 300);
+  };
+
   useEffect(() => {
     handleMovie();
   }, []);
 
   return (
     <div className={styles["movie-wrapper"]}>
+      <div className={styles["navigationBar"]}>
+        {Object.entries(SECTIONS_CONSTANTS).map((section, index) => (
+          <nav
+            key={index}
+            onClick={() => handleSection(section[1])}
+            // id={section[1]}
+          >
+            {section[1]}
+          </nav>
+        ))}
+      </div>
       {Object.entries(movies).map(([sectionName, movieList]) => (
-        <div key={sectionName} className={styles["movie-section"]}>
+        <div
+          key={sectionName}
+          id={SECTIONS_CONSTANTS[sectionName]}
+          className={styles["movie-section"]}
+        >
           <h2 className={styles["section-title"]}>
             {SECTIONS_CONSTANTS[sectionName]}
           </h2>

@@ -1,13 +1,15 @@
   .movie-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 25px;
+    gap:5px;
+    justify-content: space-between;
+    align-content: flex-start;
+    
 
     .movie-card {
       width: 250px;
       margin-top: 10px;
       margin-bottom: 0;
-      align-items: left;
 
       img {
         width: 100%;

@@ -47,6 +47,7 @@ const getYoutubeEmbedUrl = (trailer) => {
 
 export default function TrailersSection({ movieList }) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
   const movieRefs = useRef([]);
   const movies = useMemo(
     () => (Array.isArray(movieList) ? movieList : []),
@@ -54,8 +55,8 @@ export default function TrailersSection({ movieList }) {
   );
 
   const showPreviousTrailer = () => {
-    setCurrentIndex((prevIndex) =>
-      (prevIndex - 1 + movies.length) % movies.length
+    setCurrentIndex(
+      (prevIndex) => (prevIndex - 1 + movies.length) % movies.length
     );
   };
 
@@ -85,47 +86,86 @@ export default function TrailersSection({ movieList }) {
     return null;
   }
 
+  const handleIFrame = (data) => {
+    if (!data) return;
+    try {
+      setIsPlaying(true);
+    } catch {}
+  };
+
   return (
-    <div className={styles["trailers-section"]}>
-      <iframe
+    <div className={styles["trailer"]}>
+      <div className={styles["trailers-section"]}>
+        <img
+          className={styles["trailer-video"]}
+          src={movies[currentIndex]?.primaryImage}
+          alt={movies[currentIndex]?.primaryTitle}
+          onClick={() => handleIFrame(movies[currentIndex])}
+        />
+        {/* <iframe
         className={styles["trailer-video"]}
         src={trailerUrl}
         title={movies[currentIndex]?.originalTitle || "Movie Trailer"}
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen
-      />
-      <ul className={styles["movie-list"]}>
-        {movies.map((movie, index) => (
-          <li
-            key={movie.id || index}
-            className={index === currentIndex ? styles["active"] : ""}
-            ref={(element) => {
-              movieRefs.current[index] = element;
-            }}
-            onClick={() => setCurrentIndex(index)}
-          >
-            <img
-              src={movie?.thumbnails?.[0]?.url || movie?.primaryImage}
-              alt={movie?.originalTitle || "Movie trailer"}
+        onClick={() => setIsPlaying(true)}
+      /> */}
+        <ul className={styles["movie-list"]}>
+          {movies.map((movie, index) => (
+            <li
+              key={movie.id || index}
+              className={index === currentIndex ? styles["active"] : ""}
+              ref={(element) => {
+                movieRefs.current[index] = element;
+              }}
+              onClick={() => setCurrentIndex(index)}
+            >
+              <img
+                src={movie?.thumbnails?.[0]?.url || movie?.primaryImage}
+                alt={movie?.originalTitle || "Movie trailer"}
+              />
+            </li>
+          ))}
+        </ul>
+        {movies.length > 0 && (
+          <div>
+            <div className={styles["trailer-navigation"]}>
+              <button
+                className={styles["prev-button"]}
+                onClick={showPreviousTrailer}
+              >
+                <img src="/images/back-button.svg" alt="Previous" />
+              </button>
+              <button
+                className={styles["next-button"]}
+                onClick={showNextTrailer}
+              >
+                <img src="/images/next-button.svg" alt="next" />
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+      {isPlaying && (
+        <div className={styles["back-drop"]}>
+          <div className={styles["trailer-modal"]}>
+            <button
+              className={styles["cross-Btn"]}
+              onClick={() => setIsPlaying(false)}
+            >
+              <img
+                className={styles["cross-img"]}
+                src="/images/cross-button.svg"
+                alt="cross_Btn"
+              />
+            </button>
+            <iframe
+              className={styles["trailer-iFrame"]}
+              src={trailerUrl}
+              title={movies[currentIndex]?.originalTitle || "Movie Trailer"}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
             />
-          </li>
-        ))}
-      </ul>
-      {movies.length > 0 && (
-        <div>
-          <div className={styles["trailer-navigation"]}>
-            <button
-              className={styles["prev-button"]}
-              onClick={showPreviousTrailer}
-            >
-              <img src="/images/back-button.svg" alt="Previous" />
-            </button>
-            <button
-              className={styles["next-button"]}
-              onClick={showNextTrailer}
-            >
-              <img src="/images/next-button.svg" alt="next" />
-            </button>
           </div>
         </div>
       )}
