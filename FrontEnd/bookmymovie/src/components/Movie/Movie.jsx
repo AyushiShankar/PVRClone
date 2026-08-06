@@ -42,7 +42,6 @@ export default function Movie() {
 
   const handleSection = (sectionKey) => {
     const section = document.getElementById(sectionKey);
-    console.log(section);
     setTimeout(() => {
       section.scrollIntoView({
         behavior: "smooth",
@@ -69,6 +68,7 @@ export default function Movie() {
           </nav>
         ))}
       </div>
+
       {Object.entries(movies).map(([sectionName, movieList]) => (
         <div
           key={sectionName}

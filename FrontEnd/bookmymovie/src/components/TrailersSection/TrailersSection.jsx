@@ -1,49 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./TrailerSection.module.scss";
-
-const getTrailerUrl = (trailer) => {
-  if (!trailer) return null;
-  if (typeof trailer === "string") return trailer;
-  if (Array.isArray(trailer)) {
-    return trailer.map(getTrailerUrl).find(Boolean) || null;
-  }
-  if (typeof trailer === "object") {
-    return (
-      trailer.url ||
-      trailer.videoUrl ||
-      trailer.embedUrl ||
-      trailer.link ||
-      trailer.href ||
-      null
-    );
-  }
-  return null;
-};
-
-const getYoutubeEmbedUrl = (trailer) => {
-  const url = getTrailerUrl(trailer);
-  if (!url) return null;
-  try {
-    const urlObject = new URL(url);
-    if (
-      urlObject.hostname === "www.youtube.com" ||
-      urlObject.hostname === "youtube.com"
-    ) {
-      const videoId = urlObject.searchParams.get("v");
-      return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
-    }
-    if (urlObject.hostname === "youtu.be") {
-      const videoId = urlObject.pathname.slice(1);
-      return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
-    }
-    if (urlObject.pathname.startsWith("/embed/")) {
-      return url;
-    }
-  } catch {
-    return null;
-  }
-  return null;
-};
+import Iframes from "../Iframes/Iframes";
+import getYoutubeEmbedUrl from "../../helpers/home/iframe";
+import MovieDetails from "../MovieDetails/MovieDetails";
 
 export default function TrailersSection({ movieList }) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -88,28 +47,17 @@ export default function TrailersSection({ movieList }) {
 
   const handleIFrame = (data) => {
     if (!data) return;
-    try {
-      setIsPlaying(true);
-    } catch {}
+    setIsPlaying(true);
   };
 
   return (
     <div className={styles["trailer"]}>
       <div className={styles["trailers-section"]}>
         <img
-          className={styles["trailer-video"]}
+          className={styles["trailer-thumbnail"]}
           src={movies[currentIndex]?.primaryImage}
           alt={movies[currentIndex]?.primaryTitle}
-          onClick={() => handleIFrame(movies[currentIndex])}
         />
-        {/* <iframe
-        className={styles["trailer-video"]}
-        src={trailerUrl}
-        title={movies[currentIndex]?.originalTitle || "Movie Trailer"}
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowFullScreen
-        onClick={() => setIsPlaying(true)}
-      /> */}
         <ul className={styles["movie-list"]}>
           {movies.map((movie, index) => (
             <li
@@ -128,7 +76,35 @@ export default function TrailersSection({ movieList }) {
           ))}
         </ul>
         {movies.length > 0 && (
-          <div>
+          <>
+            <span className={styles["movie-details"]}>
+              <MovieDetails movie={movies[currentIndex]} />
+              <h4>
+                {new Date(movies[currentIndex]?.releaseDate).toLocaleDateString(
+                  "en-US",
+                  {
+                    weekday: "long",
+                    month: "long",
+                    day: "numeric",
+                    year: "numeric",
+                  }
+                )}
+              </h4>
+            </span>
+            <div className={styles["movie-trailer"]}>
+              <button
+                type="button"
+                className={styles["play-button"]}
+                onClick={() => handleIFrame(movies[currentIndex])}
+                aria-label={`Play trailer for ${movies?.originalTitle}`}
+              >
+                <img
+                  src="/images/play-button.svg"
+                  alt="play_button"
+                  className={styles["play-button"]}
+                />
+              </button>
+            </div>
             <div className={styles["trailer-navigation"]}>
               <button
                 className={styles["prev-button"]}
@@ -143,31 +119,15 @@ export default function TrailersSection({ movieList }) {
                 <img src="/images/next-button.svg" alt="next" />
               </button>
             </div>
-          </div>
+          </>
         )}
       </div>
       {isPlaying && (
-        <div className={styles["back-drop"]}>
-          <div className={styles["trailer-modal"]}>
-            <button
-              className={styles["cross-Btn"]}
-              onClick={() => setIsPlaying(false)}
-            >
-              <img
-                className={styles["cross-img"]}
-                src="/images/cross-button.svg"
-                alt="cross_Btn"
-              />
-            </button>
-            <iframe
-              className={styles["trailer-iFrame"]}
-              src={trailerUrl}
-              title={movies[currentIndex]?.originalTitle || "Movie Trailer"}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
-          </div>
-        </div>
+        <Iframes
+          onClick={() => setIsPlaying(false)}
+          src={trailerUrl}
+          title={movies[currentIndex]?.originalTitle}
+        />
       )}
     </div>
   );

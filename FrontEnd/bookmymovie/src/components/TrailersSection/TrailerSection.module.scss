@@ -1,18 +1,58 @@
 .trailer {
+  .movie-details {
+    position: absolute;
+    color: black;
+    opacity: 1;
+    z-index: 3;
+    top: 10%;
+    left: 10%;
+  }
+
   .trailers-section {
     position: relative;
     width: 100%;
     overflow: hidden;
 
-    .trailer-video {
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+
+      background: linear-gradient(
+        115deg,
+        #fff 19.65%,
+        #ffffffb8 47.83%,
+        #fff0 85.63%
+      );
+
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .trailer-thumbnail {
       display: block;
       justify-content: center;
       width: 100%;
       height: 600px;
       border: none;
-      opacity: 0.5;
     }
 
+    .movie-trailer {
+      position: absolute;
+      top: 30%;
+      right: 30px;
+
+      .play-button {
+        border: 1px solid white;
+        border-radius: 100%;
+
+        img {
+          max-width: 70px;
+          max-height: 70px;
+
+        }
+      }
+    }
     .trailer-navigation {
       position: absolute;
       top: 50%;
@@ -114,60 +154,6 @@
       .active {
         border-color: yellow;
         transform: scale(1.05);
-      }
-    }
-  }
-
-  .back-drop {
-    position: fixed;
-    inset: 0;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    background-color: rgba(0, 0, 0, 0.5);
-
-    z-index: 1000;
-
-    .trailer-modal {
-      position: relative;
-
-      width: 60vw;
-      height: 60vh;
-
-      .trailer-iFrame {
-        display: block;
-
-        width: 100%;
-        height: 100%;
-
-        border: none;
-        border-radius: 10px;
-        background-color: black;
-      }
-
-      .cross-Btn {
-        position: absolute;
-
-        top: -45px;
-        right: 0;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        padding: 0;
-
-        border: none;
-        background: transparent;
-
-        cursor: pointer;
-
-        .cross-img {
-          width: 30px;
-          height: 30px;
-        }
       }
     }
   }
