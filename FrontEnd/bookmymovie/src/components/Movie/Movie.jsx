@@ -1,15 +1,26 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "./Movie.module.scss";
 import { SECTIONS_CONSTANTS } from "../../config/SectionConfig";
 import MovieCard from "../MovieCard/MovieCard";
 import TrailersSection from "../TrailersSection/TrailersSection";
 import { movieHalls } from "../../config/SectionConfig";
+import {
+  fetchMovieSections,
+  getMovieError,
+  getMovieLoading,
+  getMovieSections,
+  getPage,
+  getSize,
+} from "../../Redux/movieSlice";
 
 export default function Movie() {
-  const [movies, setMovies] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(0);
-  const [size, setSize] = useState(10);
+  const dispatch = useDispatch();
+  const movies = useSelector(getMovieSections);
+  const loading = useSelector(getMovieLoading);
+  const error = useSelector(getMovieError);
+  const page = useSelector(getPage);
+  const size = useSelector(getSize);
 
   const handleLanguage = (language) => {
     const langName = new Intl.DisplayNames(language, {
@@ -19,30 +30,10 @@ export default function Movie() {
     return langName.of(language)?.toUpperCase() || language;
   };
 
-  const handleMovie = async () => {
-    try {
-      setLoading(true);
-
-      const response = await fetch(
-        `http://localhost:8082/movies/sections?page=${page}&size=${size}`
-      );
-
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      const data = await response.json();
-
-      setMovies(data || {});
-    } catch (error) {
-      console.error("Error fetching movies:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleSection = (sectionKey) => {
     const section = document.getElementById(sectionKey);
+    if (!section) return;
+
     setTimeout(() => {
       section.scrollIntoView({
         behavior: "smooth",
@@ -53,8 +44,8 @@ export default function Movie() {
   };
 
   useEffect(() => {
-    handleMovie();
-  }, []);
+    dispatch(fetchMovieSections({ page, size }));
+  }, [dispatch, page, size]);
 
   return (
     <div className={styles["movie-wrapper"]}>
@@ -63,7 +54,6 @@ export default function Movie() {
           <nav
             key={index}
             onClick={() => handleSection(section[1])}
-            // id={section[1]}
             className={styles["nav-name"]}
           >
             {section[1]}
@@ -77,11 +67,13 @@ export default function Movie() {
             src={hall[1]}
             height="30"
             alt="IMAX"
-            // class="w-6 shadow-2"
             key={hall[0]}
           />
         ))}
       </div>
+
+      {loading && <p className={styles["movie-status"]}>Loading movies...</p>}
+      {error && <p className={styles["movie-error"]}>{error}</p>}
 
       {Object.entries(movies).map(([sectionName, movieList]) => (
         <div

@@ -5,7 +5,7 @@
   .navigationBar {
     position: sticky;
       top: 0;
-    z-index: 999;
+    z-index: 5;
     display: flex;
     padding: 0;
     background-color: white;
@@ -70,5 +70,16 @@
     display: flex;
     flex-direction: row;
     gap: 15px;
+  }
+
+  .movie-status,
+  .movie-error {
+    margin: 20px 0;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .movie-error {
+    color: #b3261e;
   }
 }
