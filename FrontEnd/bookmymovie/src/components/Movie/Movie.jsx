@@ -3,6 +3,7 @@ import styles from "./Movie.module.scss";
 import { SECTIONS_CONSTANTS } from "../../config/SectionConfig";
 import MovieCard from "../MovieCard/MovieCard";
 import TrailersSection from "../TrailersSection/TrailersSection";
+import { movieHalls } from "../../config/SectionConfig";
 
 export default function Movie() {
   const [movies, setMovies] = useState({});
@@ -63,9 +64,22 @@ export default function Movie() {
             key={index}
             onClick={() => handleSection(section[1])}
             // id={section[1]}
+            className={styles["nav-name"]}
           >
             {section[1]}
           </nav>
+        ))}
+      </div>
+
+      <div className={styles["movie-halls"]}>
+        {Object.entries(movieHalls).map((hall) => (
+          <img
+            src={hall[1]}
+            height="30"
+            alt="IMAX"
+            // class="w-6 shadow-2"
+            key={hall[0]}
+          />
         ))}
       </div>
 

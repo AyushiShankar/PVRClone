@@ -1,32 +1,57 @@
-    .movie-details {
-      margin-top: 10px;
-      font-size: 0.75rem;
-      text-transform: uppercase;
+.movie-details {
+  margin-top: 10px;
+  text-transform: uppercase;
+  
+  .movie-title {
+    margin: 0;
+    padding-bottom: 10px;
+    block-size: 25px;
+  }
 
-      .movie-title {
-        margin: 0;
-        padding-bottom: 10px;
-        block-size: 20px;
-      }
+  .movie-language {
+    color: #666;
+    opacity: 0.8;
+    font-weight: 600;
+  }
 
-      .movie-language {
-        font-size: 0.75rem;
-        color: #666;
-        opacity: 0.8;
-        font-weight: 600;
-      }
+  .movie-genre {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
 
-      .movie-genre {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
-
-        .genre-item {
-          border: 1px solid #666;
-          border-radius: 4px;
-          padding: 3px 7px;
-          font-size: 0.7rem;
-          color: #666;
-        }
-      }
+    .genre-item {
+      border: 1px solid #666;
+      border-radius: 4px;
+      padding: 3px 7px;
+      color: #666;
     }
+  }
+  &.details {
+    margin-top: 10px;
+
+    .movie-title {
+      font-size: 20px;
+    }
+
+    .movie-language {
+      font-size: 0.75rem;
+    }
+
+    .genre-item {
+      font-size: 0.7rem;
+    }
+  }
+  &.card {
+    .movie-title {
+      font-size: 15px;
+    }
+
+    .movie-language {
+      font-size: 0.75rem;
+    }
+
+    .genre-item {
+      font-size: 0.7rem;
+    }
+  }
+}

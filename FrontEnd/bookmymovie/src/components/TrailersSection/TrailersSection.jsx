@@ -78,7 +78,7 @@ export default function TrailersSection({ movieList }) {
         {movies.length > 0 && (
           <>
             <span className={styles["movie-details"]}>
-              <MovieDetails movie={movies[currentIndex]} />
+              <MovieDetails movie={movies[currentIndex]} variant="details" />
               <h4>
                 {new Date(movies[currentIndex]?.releaseDate).toLocaleDateString(
                   "en-US",

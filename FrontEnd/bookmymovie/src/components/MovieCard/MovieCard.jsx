@@ -55,7 +55,11 @@ export default function MovieCard({ movieList, handleLanguage }) {
               </div>
             </div>
 
-            <MovieDetails movie={movie} handleLanguage={handleLanguage} />
+            <MovieDetails
+              movie={movie}
+              handleLanguage={handleLanguage}
+              variant="card"
+            />
 
             {isPlaying && movie.trailer && (
               <Iframes
