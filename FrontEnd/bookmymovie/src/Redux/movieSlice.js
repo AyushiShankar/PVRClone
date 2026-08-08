@@ -4,6 +4,7 @@ const initialState = {
   sections: {},
   loading: false,
   error: null,
+  defaultSectionsRequested: false,
   page: 0,
   size: 10,
   selectedMovie: {},
@@ -47,6 +48,7 @@ export const movieSlice = createSlice({
       .addCase(fetchMovieSections.pending, (state) => {
         state.loading = true;
         state.error = null;
+        state.defaultSectionsRequested = true;
       })
       .addCase(fetchMovieSections.fulfilled, (state, action) => {
         state.loading = false;
@@ -64,6 +66,8 @@ export const { setPage, setSize, setSelectedMovie } = movieSlice.actions;
 export const getMovieSections = (state) => state?.movie?.sections;
 export const getMovieLoading = (state) => state?.movie?.loading;
 export const getMovieError = (state) => state?.movie?.error;
+export const getDefaultSectionsRequested = (state) =>
+  state?.movie?.defaultSectionsRequested;
 export const getPage = (state) => state?.movie?.page;
 export const getSize = (state) => state?.movie?.size;
 export const getSelectedMovie = (state) => state?.movie?.selectedMovie;

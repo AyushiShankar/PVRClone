@@ -23,6 +23,12 @@ public interface ImportedMovieRepository extends JpaRepository<ImportedMovie, Lo
 				and trim(movie.trailer) <> ''
 			""")
 	List<ImportedMovie> findNewReleaseTrailers(LocalDate releaseDate, Pageable pageable);
+
+	// List<String> getDistinctPlaces();
+
+	// @Query("""
+	// select
+	// """;)
 }
 
 // @Query("""

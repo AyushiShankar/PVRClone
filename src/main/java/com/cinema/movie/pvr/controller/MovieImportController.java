@@ -100,9 +100,19 @@ public class MovieImportController {
     // PageRequest.of(page, size, RELEASE_DATE_ASC)));
     // }
 
+    // @GetMapping("/places")
+    // public List<String> getDistinctPlaces() {
+    // return placeResponse(importedMovieRepository.getDistinctPlaces());
+
+    // }
+
     private List<ImportedMovieResponse> toResponse(List<ImportedMovie> movies) {
             return movies.stream()
                 .map(ImportedMovieResponse::from)
                 .toList();
     }
+
+    // private List<String> placeResponse(List<String> places) {
+    // return places.stream().distinct().toList();
+    // }
 }

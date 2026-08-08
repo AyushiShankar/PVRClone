@@ -1,26 +1,20 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import styles from "./Movie.module.scss";
 import { SECTIONS_CONSTANTS } from "../../config/SectionConfig";
 import MovieCard from "../MovieCard/MovieCard";
 import TrailersSection from "../TrailersSection/TrailersSection";
 import { movieHalls } from "../../config/SectionConfig";
+import MovieCrousel from "../MovieCrousel/MovieCrousel";
 import {
-  fetchMovieSections,
   getMovieError,
   getMovieLoading,
   getMovieSections,
-  getPage,
-  getSize,
 } from "../../Redux/movieSlice";
 
 export default function Movie() {
-  const dispatch = useDispatch();
   const movies = useSelector(getMovieSections);
   const loading = useSelector(getMovieLoading);
   const error = useSelector(getMovieError);
-  const page = useSelector(getPage);
-  const size = useSelector(getSize);
 
   const handleLanguage = (language) => {
     const langName = new Intl.DisplayNames(language, {
@@ -43,10 +37,6 @@ export default function Movie() {
     }, 300);
   };
 
-  useEffect(() => {
-    dispatch(fetchMovieSections({ page, size }));
-  }, [dispatch, page, size]);
-
   return (
     <div className={styles["movie-wrapper"]}>
       <div className={styles["navigationBar"]}>
@@ -63,12 +53,7 @@ export default function Movie() {
 
       <div className={styles["movie-halls"]}>
         {Object.entries(movieHalls).map((hall) => (
-          <img
-            src={hall[1]}
-            height="30"
-            alt="IMAX"
-            key={hall[0]}
-          />
+          <img src={hall[1]} height="30" alt="IMAX" key={hall[0]} />
         ))}
       </div>
 

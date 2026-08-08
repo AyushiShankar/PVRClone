@@ -5,7 +5,7 @@ import getYoutubeEmbedUrl from "../../helpers/home/iframe";
 import MovieDetails from "../MovieDetails/MovieDetails";
 
 export default function TrailersSection({ movieList }) {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(5);
   const [isPlaying, setIsPlaying] = useState(false);
   const movieRefs = useRef([]);
   const movies = useMemo(
