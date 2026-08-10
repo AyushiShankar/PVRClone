@@ -4,7 +4,6 @@ import { SECTIONS_CONSTANTS } from "../../config/SectionConfig";
 import MovieCard from "../MovieCard/MovieCard";
 import TrailersSection from "../TrailersSection/TrailersSection";
 import { movieHalls } from "../../config/SectionConfig";
-import MovieCrousel from "../MovieCrousel/MovieCrousel";
 import {
   getMovieError,
   getMovieLoading,

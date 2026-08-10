@@ -8,6 +8,10 @@ const initialState = {
   page: 0,
   size: 10,
   selectedMovie: {},
+  contactDetails: {
+    mobileNo: "",
+    emailId: "",
+  },
 };
 
 export const fetchMovieSections = createAsyncThunk(
@@ -42,6 +46,12 @@ export const movieSlice = createSlice({
     setSelectedMovie: (state, action) => {
       state.selectedMovie = action.payload;
     },
+    setContactDetails: (state, action) => {
+      state.contactDetails = action.payload;
+    },
+    updatePayloadFields: (state, action) => {
+      state.payload = { ...state.payload, ...action.payload };
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -61,7 +71,13 @@ export const movieSlice = createSlice({
   },
 });
 
-export const { setPage, setSize, setSelectedMovie } = movieSlice.actions;
+export const {
+  setPage,
+  setSize,
+  setSelectedMovie,
+  updatePayloadFields,
+  setContactDetails,
+} = movieSlice.actions;
 
 export const getMovieSections = (state) => state?.movie?.sections;
 export const getMovieLoading = (state) => state?.movie?.loading;
@@ -71,5 +87,6 @@ export const getDefaultSectionsRequested = (state) =>
 export const getPage = (state) => state?.movie?.page;
 export const getSize = (state) => state?.movie?.size;
 export const getSelectedMovie = (state) => state?.movie?.selectedMovie;
+export const getContactDetails = (state) => state?.movie?.contactDetails;
 
 export default movieSlice.reducer;

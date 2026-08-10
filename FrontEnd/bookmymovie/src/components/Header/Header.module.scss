@@ -1,0 +1,161 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-sizing: border-box;
+  width: 100%;
+  height: 52px;
+  margin: 0;
+  padding: 0 15px;
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+  background-color: rgb(255, 240, 214);
+
+  .logo-nav {
+    height: 35px;
+    padding-top: 4px;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+
+    .logo-image {
+      display: block;
+      height: 100%;
+    }
+    .navOptions {
+      margin-left: 15px;
+      display: flex;
+      gap: 5px;
+      font-size: 12px;
+      font-weight: 700;
+      list-style: none;
+      padding: 0;
+
+      .navigation {
+        cursor: pointer;
+        padding: 5px;
+        display: flex;
+        align-items: center;
+
+        &.active {
+          background-color: #ffcb05;
+          border-radius: 15px;
+        }
+        img {
+          padding-right: 3px;
+          width: 17px;
+          height: 17px;
+        }
+
+        &:hover {
+          border: 1px solid lightgray;
+          background-color: lightgray;
+          border-radius: 15px;
+        }
+      }
+    }
+  }
+
+  .login {
+    gap: 5px;
+    display: flex;
+
+    .searchBox {
+      width: 180px;
+      height: 30px;
+      border: 1px solid lightgray;
+      border-radius: 5px;
+      background-color: white;
+      display: flex;
+      align-items: center;
+      padding: 3px;
+      .searchIcon {
+        width: 20px;
+        height: 20px;
+      }
+      .searchBar {
+        border: none;
+        outline: none;
+        font-weight: 700;
+        font-size: 14px;
+        background: transparent;
+      }
+    }
+
+    .login-button {
+      gap: 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 700;
+      border: none;
+      border-radius: 5px;
+      background-color: #ffcb05;
+      padding: 10px 18px;
+    }
+  }
+
+  .search {
+    position: absolute;
+    top: 52px;
+    left: 0;
+
+    width: 100%;
+    height: 75vh;
+    background-color: white;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    box-sizing: border-box;
+
+    .content {
+      box-sizing: border-box;
+      margin: 40px 80px;
+      .searchHeader {
+        background-color: transparent;
+         margin:0;
+          position: relative;
+
+        &::after {
+          content: "";
+          margin:0;
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: -6px;
+          height: 2px;
+          background-color: #ffcb05;
+        }
+      }
+      .list {
+        padding: 32px 0;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 15px;
+
+        .movie {
+          min-width: 0;
+          border-bottom: 1px solid lightgray;
+          display: flex;
+          align-items: center;
+
+          padding: 4px;
+          box-sizing: border-box;
+
+          font-size: 10px;
+
+          .movieImage {
+            flex-shrink: 0;
+            margin-right: 15px;
+          }
+
+        }
+      }
+    }
+  }
+
+}
+

@@ -25,8 +25,18 @@ export const logo =
 
 export const headerIcons = {
   Home: "https://www.pvrcinemas.com/static/media/home_black.1b55c68611f81a4445b8976c8be163b7.svg",
-  Discounts:
+  Offers:
     "https://www.pvrcinemas.com/static/media/offer_black.13990334b27ef9226629be21c14841ed.svg",
   Login:
     "https://www.pvrcinemas.com/static/media/profile-icon.ee2c867123ca009a119b2a8c3923da85.svg",
-};  
+  Search:
+    "https://www.pvrcinemas.com/static/media/search-b.5ea3e130f1b230c9ddea44552a22c42d.svg",
+};
+
+export const headerNavBar = ["Home", "Offers"];
+
+export const login =
+  "https://www.pvrcinemas.com/static/media/Cinema%20House%201.ddda5acf194e124b216b.gif";
+
+export const phone =
+  "https://www.pvrcinemas.com/static/media/phone.67da6c313d1d0c4cf250c028ca0d8674.svg"; 
