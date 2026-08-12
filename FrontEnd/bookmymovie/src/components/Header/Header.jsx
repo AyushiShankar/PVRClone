@@ -1,6 +1,6 @@
 import { logo, headerIcons, headerNavBar } from "../../config/SectionConfig";
 import styles from "./Header.module.scss";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { getMovieSections, getCon } from "../../Redux/movieSlice";
 import MovieDetails from "../MovieDetails/MovieDetails";
@@ -10,7 +10,7 @@ import Login from "../Login/Login";
 export default function Header() {
   const [text, setText] = useState("");
   const [loginModal, setLoginModal] = useState(false);
-
+  const loginRef = useRef();
   const [search, setSearch] = useState(false);
   const [current, setCurrent] = useState(0);
   const movies = useSelector(getMovieSections);
@@ -76,6 +76,7 @@ export default function Header() {
           <button
             className={styles["login-button"]}
             onClick={() => setLoginModal(true)}
+            disabled={loginModal}
           >
             <img
               src={headerIcons?.Login}
@@ -130,7 +131,7 @@ export default function Header() {
           </div>
         )}
       </header>
-      {loginModal && <Login />}
+      {loginModal && <Login onClose={() => setLoginModal(false)} />}
     </>
   );
 }
