@@ -25,34 +25,32 @@ public class SecurityConfig {
                 .headers(headers -> headers
                         .crossOriginOpenerPolicy(policy -> policy.policy(
                                 CrossOriginOpenerPolicy.SAME_ORIGIN_ALLOW_POPUPS)))
-                       .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**").permitAll()
-                .anyRequest().authenticated()
-            );
-                       
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/movies/**").permitAll()
+                        .anyRequest().authenticated());
 
         return http.build();
     }
 
     @Bean
-    public CorsConfigurationSource corsConfigurationSource(){
+    public CorsConfigurationSource corsConfigurationSource() {
 
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedMethods(List.of( "GET",
-                "POST",
+        configuration.setAllowedMethods(List.of("GET",
+                        "POST",
                 "PUT",
                 "DELETE",
                 "OPTIONS"));
 
-        configuration.setAllowedOrigins(List.of("http://localhost:3000")) ;       
+        configuration.setAllowedOrigins(List.of("http://localhost:3000"));
 
-         configuration.setAllowedHeaders(
-            List.of("*")
-        );
+        configuration.setAllowedHeaders(
+                List.of("*"));
 
-        configuration.setAllowCredentials(true);   
-        
+        configuration.setAllowCredentials(true);
+
         UrlBasedCorsConfigurationSource url = new UrlBasedCorsConfigurationSource();
         url.registerCorsConfiguration("/**", configuration);
 

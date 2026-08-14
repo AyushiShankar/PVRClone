@@ -1,24 +1,23 @@
 import styles from "./Login.module.scss";
 import { login, phone } from "../../config/SectionConfig";
 import { useSelector, useDispatch } from "react-redux";
-import { updatePayloadFields, getContactDetails } from "../../Redux/movieSlice";
+import {
+  updatePayloadFields,
+  getContactDetails,
+  setContactDetails,
+  setIsAuthenticated,
+} from "../../Redux/movieSlice";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useState } from "react";
 import { API_BASE_URL, RECAPTCHA_SITE_KEY } from "../../config/environment";
 import { GoogleLogin } from "@react-oauth/google";
-import * as yup from "yup";
 import { REGEX } from "../../config/regex";
-
-const getLoginFormSchema = (mobile) =>
-  yup.object().shape({
-    mobile: yup
-      .string()
-      .required("Enter mobile Number")
-      .matches(REGEX.MOBILE_NUMBER, "Please enter valid mobile number")
-  });
 
 export default function Login({ onClose }) {
   const [captchaToken, setCaptchaToken] = useState(null);
+  const [mobile, setMobile] = useState("");
+  const [submit, setSubmit] = useState(false);
+  const dispatch = useDispatch();
 
   const handleGoogleLogin = async (credentialResponse) => {
     try {
@@ -33,15 +32,28 @@ export default function Login({ onClose }) {
           credential: credentialResponse?.credential,
         }),
       });
-
-      const responseText = await response.text();
+      if (response.ok) {
+        dispatch(setIsAuthenticated(true));
+      }
     } catch (error) {
       console.error("5. FETCH ERROR:", error);
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    setSubmit(true);
+    const result = mobile.match(REGEX.MOBILE_NUMBER);
+    if (captchaToken && result) {
+      console.log("loggedin");
+      dispatch(
+        setContactDetails({
+          mobileNo: mobile,
+          email: "",
+        })
+      );
+      onClose?.();
+    }
   };
 
   return (
@@ -51,7 +63,10 @@ export default function Login({ onClose }) {
           src="../images/cross-button.svg"
           alt="cross-icon"
           className={styles.cross}
-          onClick={onClose}
+          onClick={() => {
+            onClose?.();
+            setSubmit(false);
+          }}
         />
         <img src={login} alt="login-form" className={styles["login-image"]} />
         <h2 className={styles.heading}>Verify Phone Number</h2>
@@ -62,21 +77,30 @@ export default function Login({ onClose }) {
             <input
               className={styles.mobileNo}
               styles={{ border: "none", outline: "none" }}
+              onChange={(e) => setMobile(e.target.value)}
+              value={mobile}
+              maxLength={10}
             />
             <img className={styles.phone} src={phone} alt="phone" />
           </span>
+          {!mobile.match(REGEX.MOBILE_NUMBER) && mobile ? (
+            <p className={styles.error}>Please enter valid mobile number</p>
+          ) : (
+            !mobile &&
+            submit && <p className={styles.error}>Mobile Number is mandatory</p>
+          )}
+          <br />
           <div className={styles["google-captcha"]}>
             <ReCAPTCHA
               sitekey={RECAPTCHA_SITE_KEY}
               onChange={(token) => setCaptchaToken(token)}
             />
+            {!captchaToken && submit && (
+              <p className={styles.error}>Please verify CAPTCHA</p>
+            )}
           </div>
-          <button
-            className={`${styles["login-btn"]} ${
-              !captchaToken ? styles.disabled : ""
-            }`}
-            disabled={!captchaToken}
-          >
+
+          <button className={styles["login-btn"]} type="submit">
             Proceed
           </button>
         </form>
@@ -100,14 +124,8 @@ export default function Login({ onClose }) {
             console.log("Google Login Failed");
           }}
         />
-        {/* <button
-          type="button"
-          className={styles["google-btn"]}
-          onClick={handleGoogleLogin}
-        >
-          Continue with Google
-        </button> */}
       </div>
     </div>
   );
-}
+};
+

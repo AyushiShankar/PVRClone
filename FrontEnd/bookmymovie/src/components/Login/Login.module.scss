@@ -56,7 +56,6 @@
       display: block;
       position: relative;
       padding: 6px;
-      margin-bottom: 25px;
       align-items: center;
 
       .mobileLabel {
@@ -98,6 +97,13 @@
       }
     }
    
+  }
+  .error{
+    margin:0;
+    padding:3px;
+    color:red;
+    font-weight: 500;
+    font-size:12px;
   }
   .separator {
     display: flex;

@@ -1,8 +1,8 @@
 import { logo, headerIcons, headerNavBar } from "../../config/SectionConfig";
 import styles from "./Header.module.scss";
-import { useMemo, useState, useRef } from "react";
+import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import { getMovieSections, getCon } from "../../Redux/movieSlice";
+import { getMovieSections, getIsAuthenticated } from "../../Redux/movieSlice";
 import MovieDetails from "../MovieDetails/MovieDetails";
 import useDebounce from "../../utils/hooks/useDebouce";
 import Login from "../Login/Login";
@@ -10,12 +10,13 @@ import Login from "../Login/Login";
 export default function Header() {
   const [text, setText] = useState("");
   const [loginModal, setLoginModal] = useState(false);
-  const loginRef = useRef();
   const [search, setSearch] = useState(false);
   const [current, setCurrent] = useState(0);
   const movies = useSelector(getMovieSections);
-  const newRelease = Object.entries(movies)[0][1];
+  const isAuthenticated = useSelector(getIsAuthenticated);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
 
+  const newRelease = Object.entries(movies ?? {})[0]?.[1] ?? [];
   const debounceValue = useDebounce(text, 300);
 
   const filteredData = useMemo(() => {
@@ -76,7 +77,7 @@ export default function Header() {
           <button
             className={styles["login-button"]}
             onClick={() => setLoginModal(true)}
-            disabled={loginModal}
+            // disabled={loginModal}
           >
             <img
               src={headerIcons?.Login}
@@ -131,7 +132,9 @@ export default function Header() {
           </div>
         )}
       </header>
-      {loginModal && <Login onClose={() => setLoginModal(false)} />}
+      {loginModal && !isAuthenticated && (
+        <Login onClose={() => setLoginModal(false)} />
+      )}
     </>
   );
 }

@@ -12,12 +12,14 @@ const initialState = {
     mobileNo: "",
     emailId: "",
   },
+  isAuthenticated: false,
 };
 
 export const fetchMovieSections = createAsyncThunk(
   "movie/fetchMovieSections",
   async ({ page, size }, { rejectWithValue }) => {
     try {
+      console.log("Reached");
       const response = await fetch(
         `http://localhost:8082/movies/sections?page=${page}&size=${size}`
       );
@@ -52,6 +54,13 @@ export const movieSlice = createSlice({
     updatePayloadFields: (state, action) => {
       state.payload = { ...state.payload, ...action.payload };
     },
+    setIsAuthenticated: (state, action) => {
+      state.isAuthenticated = action.payload;
+    },
+    logout: (state) => {
+      state.isAuthenticated = false;
+    },
+    clearMovieState: () => initialState,
   },
   extraReducers: (builder) => {
     builder
@@ -67,6 +76,8 @@ export const movieSlice = createSlice({
       .addCase(fetchMovieSections.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Unable to fetch movies";
+
+        state.defaultSectionsRequested = false;
       });
   },
 });
@@ -77,6 +88,9 @@ export const {
   setSelectedMovie,
   updatePayloadFields,
   setContactDetails,
+  setIsAuthenticated,
+  logout,
+  clearMovieState,
 } = movieSlice.actions;
 
 export const getMovieSections = (state) => state?.movie?.sections;
@@ -88,5 +102,6 @@ export const getPage = (state) => state?.movie?.page;
 export const getSize = (state) => state?.movie?.size;
 export const getSelectedMovie = (state) => state?.movie?.selectedMovie;
 export const getContactDetails = (state) => state?.movie?.contactDetails;
+export const getIsAuthenticated = (state) => state?.movie?.isAuthenticated;
 
 export default movieSlice.reducer;
