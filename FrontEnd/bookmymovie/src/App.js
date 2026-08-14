@@ -20,10 +20,10 @@ export default function App() {
   const INACTIVITY_TIME = 15 * 60 * 1000;
 
   useEffect(() => {
-    if (!defaultSectionsRequested) {
+    if (isAuthenticated && !defaultSectionsRequested) {
       dispatch(fetchMovieSections({ page, size }));
     }
-  }, [defaultSectionsRequested, page, size]);
+  }, [isAuthenticated, defaultSectionsRequested, page, size]);
 
   useEffect(() => {
     if (!isAuthenticated) {
