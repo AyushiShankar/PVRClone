@@ -4,6 +4,7 @@ import styles from "./MovieCard.module.scss";
 import Flag from "../TagFlag/Flag";
 import Iframes from "../Iframes/Iframes";
 import MovieDetails from "../MovieDetails/MovieDetails";
+import { routes } from "../../config/config";
 
 export default function MovieCard({ movieList, handleLanguage }) {
   const [playingMovieId, setPlayingMovieId] = useState(null);
@@ -21,6 +22,8 @@ export default function MovieCard({ movieList, handleLanguage }) {
 
     return null;
   };
+
+  const handleBooking = (movie) => {};
 
   return (
     <div className={styles["movie-container"]}>
@@ -51,7 +54,12 @@ export default function MovieCard({ movieList, handleLanguage }) {
                   </button>
                 )}
 
-                <button className={styles["book-button"]}>Book</button>
+                <button
+                  className={styles["book-button"]}
+                  onClick={() => handleBooking(movie)}
+                >
+                  Book
+                </button>
               </div>
             </div>
 
