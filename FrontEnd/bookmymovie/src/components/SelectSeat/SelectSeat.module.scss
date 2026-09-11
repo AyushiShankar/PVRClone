@@ -1,0 +1,74 @@
+.container {
+  width: 100%;
+  background-color: rgb(241, 241, 241);
+  overflow-y: hidden;
+
+  .showDates {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    padding-left: 25px;
+    background-color: white;
+    text-align: center;
+
+    .dates {
+      padding: 15px;
+    }
+  }
+
+  .seatingArrangement {
+    margin: 10px 80px;
+    background-color: white;
+    border-radius: 10px;
+
+    .pvrName {
+      padding: 20px;
+      gap: 5px;
+
+      p {
+        margin: 0;
+      }
+    }
+
+    .separator {
+      display: block;
+      height: 1px;
+      width: 100%;
+      background-color: lightgray;
+      margin-bottom: 15px;
+    }
+    .shows {
+      margin: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: row;
+      gap: 15px;
+
+        .language {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  margin: 0;
+  padding: 0 14px;
+
+  background: white;
+  font-size: 18px;
+  font-weight: 700;
+  color: #000;
+}
+      .showTime {
+        padding: 11px 5px;
+        border: 1px solid #76be43;
+        font-weight: 700;
+        color: #76be43;
+        border-radius: 5px;
+        text-align: center;
+        align-items: center;
+        background: #007d230a;
+        justify-content: center;
+      }
+    }
+  }
+}

@@ -16,45 +16,45 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(csrf -> csrf.disable())
-                .cors(cors -> {
-                })
-                .headers(headers -> headers
-                        .crossOriginOpenerPolicy(policy -> policy.policy(
-                                CrossOriginOpenerPolicy.SAME_ORIGIN_ALLOW_POPUPS)))
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/movies/**").permitAll()
-                        .anyRequest().authenticated());
+        @Bean
+        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+                http
+                                .csrf(csrf -> csrf.disable())
+                                .cors(cors -> {
+                                })
+                                .headers(headers -> headers
+                                                .crossOriginOpenerPolicy(policy -> policy.policy(
+                                                                CrossOriginOpenerPolicy.SAME_ORIGIN_ALLOW_POPUPS)))
+                                .authorizeHttpRequests(auth -> auth
+                                                .requestMatchers("/api/auth/**").permitAll()
+                                                .requestMatchers("/movies").permitAll()
+                                                .anyRequest().authenticated());
 
-        return http.build();
-    }
+                return http.build();
+        }
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
+        @Bean
+        public CorsConfigurationSource corsConfigurationSource() {
 
-        CorsConfiguration configuration = new CorsConfiguration();
+                CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedMethods(List.of("GET",
-                        "POST",
-                "PUT",
-                "DELETE",
-                "OPTIONS"));
+                configuration.setAllowedMethods(List.of("GET",
+                                "POST",
+                                "PUT",
+                                "DELETE",
+                                "OPTIONS"));
 
-        configuration.setAllowedOrigins(List.of("http://localhost:3000"));
+                configuration.setAllowedOrigins(List.of("http://localhost:3000"));
 
-        configuration.setAllowedHeaders(
-                List.of("*"));
+                configuration.setAllowedHeaders(
+                                List.of("*"));
 
-        configuration.setAllowCredentials(true);
+                configuration.setAllowCredentials(true);
 
-        UrlBasedCorsConfigurationSource url = new UrlBasedCorsConfigurationSource();
-        url.registerCorsConfiguration("/**", configuration);
+                UrlBasedCorsConfigurationSource url = new UrlBasedCorsConfigurationSource();
+                url.registerCorsConfiguration("/**", configuration);
 
-        return url;
+                return url;
 
-    }
+        }
 }

@@ -6,6 +6,8 @@ import { getMovieSections, getIsAuthenticated } from "../../Redux/movieSlice";
 import MovieDetails from "../MovieDetails/MovieDetails";
 import useDebounce from "../../utils/hooks/useDebouce";
 import Login from "../Login/Login";
+import { routes } from "../../config/config";
+import { NavLink } from "react-router-dom";
 
 export default function Header() {
   const [text, setText] = useState("");
@@ -14,9 +16,8 @@ export default function Header() {
   const [current, setCurrent] = useState(0);
   const movies = useSelector(getMovieSections);
   const isAuthenticated = useSelector(getIsAuthenticated);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
 
-  const newRelease = Object.entries(movies ?? {})[0]?.[1] ?? [];
+  const newRelease = Object.entries(movies)[0][1];
   const debounceValue = useDebounce(text, 300);
 
   const filteredData = useMemo(() => {
@@ -44,16 +45,25 @@ export default function Header() {
           <img src={logo} alt="app_logo" className={styles["logo-image"]} />
           <ul className={styles.navOptions}>
             {headerNavBar.map((nav, index) => (
-              <li
-                className={`${styles.navigation} ${
+              // <li
+              //   className={`${styles.navigation} ${
+              //     index === current ? styles.active : ""
+              //   }`}
+              //   onClick={() => setCurrent(index)}
+              //   key={index}
+              // >
+              <NavLink
+                to={routes[nav]}
+                className={`${styles.navLink} ${
                   index === current ? styles.active : ""
                 }`}
                 onClick={() => setCurrent(index)}
                 key={index}
               >
-                <img src={headerIcons?.[nav]} alt="home" key={index} />
+                <img src={headerIcons?.[nav]} alt={nav} />
                 {nav}
-              </li>
+              </NavLink>
+              // </li>
             ))}
           </ul>
         </div>
@@ -77,7 +87,6 @@ export default function Header() {
           <button
             className={styles["login-button"]}
             onClick={() => setLoginModal(true)}
-            // disabled={loginModal}
           >
             <img
               src={headerIcons?.Login}
@@ -132,7 +141,7 @@ export default function Header() {
           </div>
         )}
       </header>
-      {loginModal && !isAuthenticated && (
+      {loginModal && isAuthenticated && (
         <Login onClose={() => setLoginModal(false)} />
       )}
     </>

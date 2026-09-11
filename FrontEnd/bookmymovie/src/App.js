@@ -1,6 +1,9 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Home from "./pages/Home/Home";
+import Offers from "./pages/Offers/Offers";
+import { Routes, Route } from "react-router-dom";
+import MovieSessions from "./pages/MovieSessions/MovieSessions";
 import {
   fetchMovieSections,
   getDefaultSectionsRequested,
@@ -10,6 +13,8 @@ import {
   clearMovieState,
   logout,
 } from "./Redux/movieSlice";
+import Header from "./components/Header/Header";
+import SeatBooking from "./pages/SeatBooking/SeatBooking";
 
 export default function App() {
   const dispatch = useDispatch();
@@ -56,5 +61,15 @@ export default function App() {
     };
   }, [isAuthenticated]);
 
-  return <Home />;
+  return (
+    <>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/Offers" element={<Offers />} />
+        <Route path="/SeatBooking" element={<SeatBooking />} />
+        <Route path="/MovieSessions" element={<MovieSessions />} />
+      </Routes>
+    </>
+  );
 }

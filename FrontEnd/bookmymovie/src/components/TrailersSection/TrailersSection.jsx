@@ -1,13 +1,14 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./TrailerSection.module.scss";
 import Iframes from "../Iframes/Iframes";
-import getYoutubeEmbedUrl from "../../helpers/home/iframe";
+import getYoutubeEmbedUrl from "../../helpers/iframe";
 import MovieDetails from "../MovieDetails/MovieDetails";
 
 export default function TrailersSection({ movieList }) {
-  const [currentIndex, setCurrentIndex] = useState(5);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const movieRefs = useRef([]);
+  const initialRef = useRef(null);
   const movies = useMemo(
     () => (Array.isArray(movieList) ? movieList : []),
     [movieList]
@@ -27,19 +28,17 @@ export default function TrailersSection({ movieList }) {
     () => getYoutubeEmbedUrl(movies[currentIndex]?.trailer),
     [currentIndex, movies]
   );
-
   useEffect(() => {
+    if (initialRef.current && currentIndex === 0) {
+      initialRef.current = false;
+      return;
+    }
     movieRefs.current[currentIndex]?.scrollIntoView({
       behavior: "smooth",
       block: "nearest",
       inline: "center",
     });
   }, [currentIndex]);
-
-  useEffect(() => {
-    setCurrentIndex(0);
-    movieRefs.current = [];
-  }, [movieList]);
 
   if (movies.length === 0) {
     return null;
@@ -51,7 +50,7 @@ export default function TrailersSection({ movieList }) {
   };
 
   return (
-    <div className={styles["trailer"]}>
+    <div className={styles["trailer"]} ref={initialRef}>
       <div className={styles["trailers-section"]}>
         <img
           className={styles["trailer-thumbnail"]}

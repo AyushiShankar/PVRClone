@@ -32,11 +32,13 @@
       list-style: none;
       padding: 0;
 
-      .navigation {
+      .navLink {
         cursor: pointer;
         padding: 5px;
         display: flex;
         align-items: center;
+                  text-decoration: none !important;
+           color: inherit;
 
         &.active {
           background-color: #ffcb05;
@@ -52,6 +54,13 @@
           border: 1px solid lightgray;
           background-color: lightgray;
           border-radius: 15px;
+        }
+
+        .navLink{
+
+  display: flex;
+  align-items: center;
+
         }
       }
     }

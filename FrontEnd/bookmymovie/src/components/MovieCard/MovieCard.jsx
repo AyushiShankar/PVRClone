@@ -1,13 +1,17 @@
 import { useState } from "react";
-import getYoutubeEmbedUrl from "../../helpers/home/iframe";
+import getYoutubeEmbedUrl from "../../helpers/iframe";
 import styles from "./MovieCard.module.scss";
 import Flag from "../TagFlag/Flag";
 import Iframes from "../Iframes/Iframes";
 import MovieDetails from "../MovieDetails/MovieDetails";
-import { routes } from "../../config/config";
+import { setSelectedMovie } from "../../Redux/movieSlice";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export default function MovieCard({ movieList, handleLanguage }) {
   const [playingMovieId, setPlayingMovieId] = useState(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const getReleaseStatus = (releaseDate) => {
     const date = new Date(releaseDate);
@@ -23,7 +27,12 @@ export default function MovieCard({ movieList, handleLanguage }) {
     return null;
   };
 
-  const handleBooking = (movie) => {};
+  const handleBooking = (movie) => {
+    if (!movie) return;
+
+    dispatch(setSelectedMovie(movie));
+    navigate(`/MovieSessions`);
+  };
 
   return (
     <div className={styles["movie-container"]}>

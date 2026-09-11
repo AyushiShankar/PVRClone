@@ -8,6 +8,7 @@ const initialState = {
   page: 0,
   size: 10,
   selectedMovie: {},
+  selectedSeats: [],
   contactDetails: {
     mobileNo: "",
     emailId: "",
@@ -48,6 +49,9 @@ export const movieSlice = createSlice({
     setSelectedMovie: (state, action) => {
       state.selectedMovie = action.payload;
     },
+    setSelectedSeats: (state, action) => {
+      state.selectedSeats = action.payload;
+    },
     setContactDetails: (state, action) => {
       state.contactDetails = action.payload;
     },
@@ -61,6 +65,10 @@ export const movieSlice = createSlice({
       state.isAuthenticated = false;
     },
     clearMovieState: () => initialState,
+    clearBooking: (state) => {
+      state.selectedMovie = {};
+      state.selectedSeats = [];
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -91,6 +99,8 @@ export const {
   setIsAuthenticated,
   logout,
   clearMovieState,
+  setSelectedSeats,
+  clearBooking,
 } = movieSlice.actions;
 
 export const getMovieSections = (state) => state?.movie?.sections;
@@ -103,5 +113,6 @@ export const getSize = (state) => state?.movie?.size;
 export const getSelectedMovie = (state) => state?.movie?.selectedMovie;
 export const getContactDetails = (state) => state?.movie?.contactDetails;
 export const getIsAuthenticated = (state) => state?.movie?.isAuthenticated;
+export const getSelectedSeats = (state) => state?.movie?.selectedSeats;
 
 export default movieSlice.reducer;

@@ -1,8 +1,10 @@
 export const routes = {
-  offers: "offers",
-  moviesessions: "moviesessions",
-  paymentStatus: "payment-status",
-  thankYou: "thankyou",
-  ekyc: "ekyc",
-  submitDetails: "submit-details",
+  Home: "/",
+  Offers: "/offers",
+  Seatbooking: "/seatBooking",
+  Moviesessions: "/moviesessions",
+  PaymentStatus: "/payment-status",
+  ThankYou: "/thankyou",
+  Elementkyc: "/ekyc",
+  SubmitDetails: "/submit-details",
 };
