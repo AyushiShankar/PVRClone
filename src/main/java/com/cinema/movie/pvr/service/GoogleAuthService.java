@@ -12,8 +12,16 @@ import java.util.Collections;
 @Service
 public class GoogleAuthService {
 
+    private static final String GOOGLE_AUTH_BACKEND = "googleAuth";
+
     @Value("${google.client-id}")
     private String googleClientId;
+
+    private final ResilientExternalCallService resilientExternalCallService;
+
+    public GoogleAuthService(ResilientExternalCallService resilientExternalCallService) {
+        this.resilientExternalCallService = resilientExternalCallService;
+    }
 
     public GoogleUser verifyToken(String credential) throws Exception {
 
@@ -24,7 +32,13 @@ public class GoogleAuthService {
                 .setAudience(Collections.singletonList(googleClientId))
                 .build();
 
-        GoogleIdToken token = verifier.verify(credential);
+        GoogleIdToken token = resilientExternalCallService.execute(GOOGLE_AUTH_BACKEND, () -> {
+            try {
+                return verifier.verify(credential);
+            } catch (Exception exception) {
+                throw new ExternalServiceException("Google token verification failed", exception);
+            }
+        });
         if (token == null) {
             throw new RuntimeException("Invalid Google ID token");
         }

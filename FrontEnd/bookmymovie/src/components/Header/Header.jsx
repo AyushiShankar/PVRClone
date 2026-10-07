@@ -45,13 +45,6 @@ export default function Header() {
           <img src={logo} alt="app_logo" className={styles["logo-image"]} />
           <ul className={styles.navOptions}>
             {headerNavBar.map((nav, index) => (
-              // <li
-              //   className={`${styles.navigation} ${
-              //     index === current ? styles.active : ""
-              //   }`}
-              //   onClick={() => setCurrent(index)}
-              //   key={index}
-              // >
               <NavLink
                 to={routes[nav]}
                 className={`${styles.navLink} ${
@@ -63,7 +56,6 @@ export default function Header() {
                 <img src={headerIcons?.[nav]} alt={nav} />
                 {nav}
               </NavLink>
-              // </li>
             ))}
           </ul>
         </div>
@@ -111,7 +103,7 @@ export default function Header() {
                 right: "30px",
                 cursor: "pointer",
               }}
-              onClick={() => setSearch(false)}
+              onClick={() => (setSearch(false), setText(""))}
             />
             <div className={styles.content}>
               <h1

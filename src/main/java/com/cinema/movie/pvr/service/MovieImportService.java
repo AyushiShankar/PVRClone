@@ -23,30 +23,36 @@ import org.springframework.web.client.RestClient;
 public class MovieImportService {
 
 	private static final String SOURCE = "rapidapi-imdb236";
+	private static final String RAPID_API_BACKEND = "rapidApi";
 
 	private final RestClient rapidApiRestClient;
 	private final RapidApiProperties properties;
 	private final ImportedMovieRepository repository;
 	private final ObjectMapper objectMapper;
+	private final ResilientExternalCallService resilientExternalCallService;
 
 	public MovieImportService(
 			RestClient rapidApiRestClient,
 			RapidApiProperties properties,
 			ImportedMovieRepository repository,
-			ObjectMapper objectMapper
+			ObjectMapper objectMapper,
+			ResilientExternalCallService resilientExternalCallService
 	) {
 		this.rapidApiRestClient = rapidApiRestClient;
 		this.properties = properties;
 		this.repository = repository;
 		this.objectMapper = objectMapper;
+		this.resilientExternalCallService = resilientExternalCallService;
 	}
 
 	@Transactional
 	public ImportResult importDefaultTitles() {
-		String response = rapidApiRestClient.get()
-				.uri(properties.titlesPath())
-				.retrieve()
-				.body(String.class);
+		String response = resilientExternalCallService.execute(RAPID_API_BACKEND, () ->
+				rapidApiRestClient.get()
+						.uri(properties.titlesPath())
+						.retrieve()
+						.body(String.class)
+		);
 
 		return saveTitles(response);
 	}

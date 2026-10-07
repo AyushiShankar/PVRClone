@@ -20,7 +20,6 @@ export const fetchMovieSections = createAsyncThunk(
   "movie/fetchMovieSections",
   async ({ page, size }, { rejectWithValue }) => {
     try {
-      console.log("Reached");
       const response = await fetch(
         `http://localhost:8082/movies/sections?page=${page}&size=${size}`
       );
