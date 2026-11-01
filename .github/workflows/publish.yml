@@ -47,11 +47,21 @@ jobs:
         run: |
           echo "name=ghcr.io/${REPOSITORY,,}/${SERVICE}" >> "$GITHUB_OUTPUT"
 
+      # - name: Build and push Docker image
+      #   uses: docker/build-push-action@v6
+      #   with:
+      #     context: ${{ matrix.service == 'frontend' && './frontend' || '.' }}
+      #     file: ${{ matrix.service == 'frontend' && './frontend/Dockerfile' || format('./services/{0}/Dockerfile', matrix.service) }}
+      #     push: true
+      #     tags: |
+      #       ${{ steps.image.outputs.name }}:${{ github.sha }}
+      #       ${{ steps.image.outputs.name }}:latest
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
-          context: ${{ matrix.service == 'frontend' && './frontend' || '.' }}
-          file: ${{ matrix.service == 'frontend' && './frontend/Dockerfile' || format('./services/{0}/Dockerfile', matrix.service) }}
+          context: ${{ matrix.service == 'frontend' && './FrontEnd/bookmymovie' || '.' }}
+          file: ${{ matrix.service == 'frontend' && './FrontEnd/bookmymovie/Dockerfile' || format('./services/{0}/Dockerfile', matrix.service) }}
           push: true
           tags: |
             ${{ steps.image.outputs.name }}:${{ github.sha }}
