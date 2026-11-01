@@ -6,10 +6,103 @@ services:
       POSTGRES_DB: pvr
       POSTGRES_USER: pvr
       POSTGRES_PASSWORD: pvr
-    ports:
-      - "5432:5432"
+    # ports:
+    #   - "5433:5432"
     volumes:
       - pvr-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pvr"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+ 
+  database-init: 
+    image: postgres:16
+    entrypoint: ["/bin/sh", "/scripts/init-databases.sh"]
+    volumes:
+      - ./scripts/init-databases.sh:/scripts/init-databases.sh:ro
+    environment:
+      PGPASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+
+  auth-service:
+    build:
+      context: .
+      dockerfile: services/auth-service/Dockerfile
+    environment:
+      AUTH_DATABASE_URL: jdbc:postgresql://postgres:5432/pvr_auth
+      DB_USERNAME: pvr
+      DB_PASSWORD: pvr
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      JWT_SECRET: ${JWT_SECRET:-01234567890123456789012345678901}
+    depends_on:
+      database-init:
+        condition: service_completed_successfully
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - "wget -q -O /dev/null http://localhost:8081/actuator/health || exit 1"
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 40s    
+
+  movie-service:
+    build:
+      context: .
+      dockerfile: services/movie-service/Dockerfile
+    environment:
+      MOVIE_DATABASE_URL: jdbc:postgresql://postgres:5432/pvr_movies
+      DB_USERNAME: pvr
+      DB_PASSWORD: pvr
+      RAPIDAPI_KEY: ${RAPIDAPI_KEY:-}
+    depends_on:
+      database-init:
+        condition: service_completed_successfully
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - "wget -q -O /dev/null http://localhost:8082/actuator/health || exit 1"
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 40s   
+  api-gateway:
+    build:
+      context: .
+      dockerfile: services/api-gateway/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      AUTH_SERVICE_URL: http://auth-service:8081
+      MOVIE_SERVICE_URL: http://movie-service:8082
+    depends_on:
+      - auth-service
+      - movie-service
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - "wget -q -O /dev/null http://localhost:8080/actuator/health || exit 1"
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 40s  
+
+
+
+  frontend:
+    build:
+      context: ./FrontEnd/bookmymovie
+      dockerfile: Dockerfile
+      args:
+        REACT_APP_API_BASE_URL: http://localhost:8080
+    ports:
+      - "3000:80"
+    depends_on:
+      - api-gateway
 
 volumes:
   pvr-postgres-data:

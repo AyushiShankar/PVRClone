@@ -2,8 +2,8 @@ import { logo, headerIcons, headerNavBar } from "../../config/SectionConfig";
 import styles from "./Header.module.scss";
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
+import Search from "../Search/Search";
 import { getMovieSections, getIsAuthenticated } from "../../Redux/movieSlice";
-import MovieDetails from "../MovieDetails/MovieDetails";
 import useDebounce from "../../utils/hooks/useDebouce";
 import Login from "../Login/Login";
 import { routes } from "../../config/config";
@@ -89,48 +89,12 @@ export default function Header() {
           </button>
         </div>
         {search && (
-          <div className={styles.search}>
-            <img
-              src="../images/cross-button.svg"
-              alt="cross-icon"
-              style={{
-                width: "32px",
-                height: "32px",
-                margin: 0,
-                position: "absolute",
-                padding: 0,
-                top: "10px",
-                right: "30px",
-                cursor: "pointer",
-              }}
-              onClick={() => (setSearch(false), setText(""))}
-            />
-            <div className={styles.content}>
-              <h1
-                style={{ fontSize: "24px", fontWeight: 700 }}
-                className={styles.searchHeader}
-              >
-                Movies
-              </h1>
-              <div className={styles.list}>
-                {displayData.map((movieList, index) => (
-                  <div className={styles.movie} key={index}>
-                    <img
-                      src={movieList?.primaryImage}
-                      alt="movieImage"
-                      style={{ height: "95px", objectFit: "fill" }}
-                      className={styles.movieImage}
-                    />
-                    <MovieDetails
-                      movie={movieList}
-                      variant=""
-                      handleLanguage={handleLanguage}
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+          <Search
+            setSearch={setSearch}
+            setText={setText}
+            displayData={displayData}
+            handleLanguage={handleLanguage}
+          />
         )}
       </header>
       {loginModal && isAuthenticated && (

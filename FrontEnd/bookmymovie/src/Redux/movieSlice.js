@@ -21,7 +21,7 @@ export const fetchMovieSections = createAsyncThunk(
   async ({ page, size }, { rejectWithValue }) => {
     try {
       const response = await fetch(
-        `http://localhost:8082/movies/sections?page=${page}&size=${size}`
+        `${process.env.REACT_APP_API_BASE_URL || "http://localhost:8080"}/movies/sections?page=${page}&size=${size}`
       );
 
       if (!response.ok) {

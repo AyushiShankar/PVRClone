@@ -6,13 +6,18 @@
   .showDates {
     display: flex;
     flex-direction: row;
-    gap: 20px;
-    padding-left: 25px;
+    padding-left: 45px;
     background-color: white;
     text-align: center;
+    align-items: end;
 
     .dates {
-      padding: 15px;
+      padding: 10px 25px;
+      min-width: 60px;
+     
+    }
+    .present {
+      background-color: #fff0d6;
     }
   }
 
@@ -44,25 +49,36 @@
       flex-direction: row;
       gap: 15px;
 
-        .language {
-  position: absolute;
-  top: -14px;
-  left: 50%;
-  transform: translateX(-50%);
+      .language {
+        position: absolute;
+        top: -14px;
+        left: 50%;
+        transform: translateX(-50%);
 
-  margin: 0;
-  padding: 0 14px;
+        margin: 0;
+        padding: 0 14px;
 
-  background: white;
-  font-size: 18px;
-  font-weight: 700;
-  color: #000;
-}
+        background: white;
+        font-size: 18px;
+        font-weight: 700;
+        color: #000;
+      }
       .showTime {
         padding: 11px 5px;
         border: 1px solid #76be43;
         font-weight: 700;
         color: #76be43;
+        border-radius: 5px;
+        text-align: center;
+        align-items: center;
+        background: #007d230a;
+        justify-content: center;
+      }
+      .noShow {
+        padding: 11px 5px;
+        border: 1px solid grey;
+        font-weight: 700;
+        color: grey;
         border-radius: 5px;
         text-align: center;
         align-items: center;
