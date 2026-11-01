@@ -27,10 +27,10 @@ public class MovieImportController {
         this.importedMovieRepository = importedMovieRepository;
     }
 
-//     @PostMapping("/import")
-//     public ImportResult importMovies() {
-//         return movieImportService.importDefaultTitles();
-//     }
+    @PostMapping("/import")
+    public ImportResult importMovies() {
+        return movieImportService.importDefaultTitles();
+    }
 
     @GetMapping
     public List<ImportedMovieResponse> getImportedMovies(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
