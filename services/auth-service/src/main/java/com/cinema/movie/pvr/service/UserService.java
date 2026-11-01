@@ -24,7 +24,7 @@ public class UserService {
             return exisitingUser.get();
         }
 
-        User user = new User(null, null, null, null, null, null);
+        User user = new User(null, null, null, null, null);
 
         user.setEmail(googleUser.email());
         user.setGoogleId(googleUser.googleId());
