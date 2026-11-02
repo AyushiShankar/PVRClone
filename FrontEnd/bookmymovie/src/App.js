@@ -28,7 +28,7 @@ export default function App() {
     if (isAuthenticated && !defaultSectionsRequested) {
       dispatch(fetchMovieSections({ page, size }));
     }
-  }, [isAuthenticated, defaultSectionsRequested, page, size]);
+  }, [isAuthenticated, defaultSectionsRequested, page, size, dispatch]);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -59,7 +59,7 @@ export default function App() {
         window.removeEventListener(event, resetTimer);
       });
     };
-  }, [isAuthenticated]);
+  }, [isAuthenticated, INACTIVITY_TIME, dispatch]);
 
   return (
     <>

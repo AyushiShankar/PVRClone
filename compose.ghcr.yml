@@ -29,6 +29,7 @@ services:
     restart: "no"
 
   auth-service:
+    platform: linux/amd64 
     image: ghcr.io/ayushishankar/pvrclone/auth-service:latest
     environment:
       AUTH_DATABASE_URL: jdbc:postgresql://postgres:5432/pvr_auth
@@ -49,6 +50,7 @@ services:
       start_period: 40s    
 
   movie-service:
+    platform: linux/amd64  
     image: ghcr.io/ayushishankar/pvrclone/movie-service:latest
     environment:
       MOVIE_DATABASE_URL: jdbc:postgresql://postgres:5432/pvr_movies
@@ -67,6 +69,7 @@ services:
       retries: 3
       start_period: 40s   
   api-gateway:
+    platform: linux/amd64   
     image: ghcr.io/ayushishankar/pvrclone/api-gateway:latest
     ports:
       - "8080:8080"
@@ -88,6 +91,7 @@ services:
 
 
   frontend:
+    platform: linux/amd64   
     image: ghcr.io/ayushishankar/pvrclone/frontend:latest
     ports:
       - "3000:80"

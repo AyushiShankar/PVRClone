@@ -1,6 +1,5 @@
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import styles from "./Movie.module.scss";
-import { useEffect } from "react";
 import { SECTIONS_CONSTANTS } from "../../config/SectionConfig";
 import MovieCard from "../MovieCard/MovieCard";
 import TrailersSection from "../TrailersSection/TrailersSection";

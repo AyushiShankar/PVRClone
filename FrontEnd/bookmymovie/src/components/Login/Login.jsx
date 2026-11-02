@@ -1,12 +1,7 @@
 import styles from "./Login.module.scss";
 import { login, phone } from "../../config/SectionConfig";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  updatePayloadFields,
-  getContactDetails,
-  setContactDetails,
-  setIsAuthenticated,
-} from "../../Redux/movieSlice";
+import { useDispatch } from "react-redux";
+import { setContactDetails, setIsAuthenticated } from "../../Redux/movieSlice";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useState } from "react";
 import { API_BASE_URL, RECAPTCHA_SITE_KEY } from "../../config/environment";
